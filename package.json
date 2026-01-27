@@ -1,0 +1,30 @@
+{
+  "name": "spotify-web-app",
+  "version": "1.0.0",
+  "description": "This is a web blog that connects Spotify in an easy way for users to see their listening data on a simple dashboard and share this data to others. A dashboard will be a single snapshot that records listening data for the past day, week, month, and year, which they can share onto a community blog page. This community blog page will feature blog posts as usual, with users able to create, edit, and view other people’s posts. On these posts, users will be able to submit a title, write their thoughts, and/or simply attach snapshots of their listening data of their choice.",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "dev": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jassi-singh02/Spotify-Web-App.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/jassi-singh02/Spotify-Web-App/issues"
+  },
+  "homepage": "https://github.com/jassi-singh02/Spotify-Web-App#readme",
+  "dependencies": {
+    "axios": "^1.13.3",
+    "dotenv": "^17.2.3",
+    "ejs": "^4.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "nodemon": "^3.1.11"
+  }
+}
