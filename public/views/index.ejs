@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spotify Snapshot</title>
+
+  <!-- Make sure your Express static points to "public" -->
+  <link rel="stylesheet" href="/Styles/Main.css" />
+</head>
+<body>
+  <%- include("Partials/Header") %>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Your Spotify listening, made simple.</h1>
+        <p class="subtitle">
+          Connect your Spotify account to view your listening data over
+          <strong>short-term</strong> and <strong>long-term</strong> periods, and share a snapshot to the community page.
+        </p>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href="/auth/login">Connect Spotify</a>
+          <a class="btn btn-secondary" href="/community">View Others</a>
+        </div>
+
+        <ul class="feature-list">
+          <li>Recently played + top tracks/artists</li>
+          <li>Short-term vs long-term insights</li>
+          <li>Share a snapshot to a community feed</li>
+        </ul>
+      </div>
+
+      <div class="hero-media">
+        <div class="image-grid">
+          <figure class="img-card">
+            <img src="/Images/Img1.jpg" alt="Placeholder screenshot 1" />
+            <figcaption>Dashboard preview</figcaption>
+          </figure>
+
+          <figure class="img-card">
+            <img src="/Images/Img2.jpg" alt="Placeholder screenshot 2" />
+            <figcaption>Listening breakdown</figcaption>
+          </figure>
+
+          <figure class="img-card">
+            <img src="/Images/Img3.jpg" alt="Placeholder screenshot 3" />
+            <figcaption>Community snapshots</figcaption>
+          </figure>
+        </div>
+        <p class="note">
+          *Images are placeholders for now — you’ll swap in real screenshots later.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <%- include("Partials/Footer") %>
+</body>
+</html>
