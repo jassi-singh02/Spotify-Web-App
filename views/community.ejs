@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community | Spotify Snapshot</title>
+
+  <link rel="stylesheet" href="/Styles/Main.css" />
+</head>
+<body>
+  <%- include("Partials/Header") %>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Community Feed</h1>
+        <p class="subtitle">
+          Browse posts and Spotify listening snapshots shared by the community.
+          Drop your own update on the right.
+        </p>
+
+        <div class="image-grid">
+          <% if (typeof posts !== "undefined" && posts.length) { %>
+            <% posts.forEach((post) => { %>
+              <article class="img-card">
+                <h3><%= post.title %></h3>
+                <p class="subtitle"><%= post.body %></p>
+
+                <% if (post.snapshotUrl) { %>
+                  <p class="note">Snapshot: <a href="<%= post.snapshotUrl %>" target="_blank" rel="noreferrer">View</a></p>
+                <% } %>
+
+                <p class="note">Posted by <%= post.author || "Anonymous" %> · <%= post.createdAt || "Just now" %></p>
+              </article>
+            <% }) %>
+          <% } else { %>
+            <article class="img-card">
+              <h3>First impressions</h3>
+              <p class="subtitle">“Just connected my account. Loving the short-term insights.”</p>
+              <p class="note">Posted by Kai · Today</p>
+            </article>
+
+            <article class="img-card">
+              <h3>Top tracks week</h3>
+              <p class="subtitle">“Shared my top tracks snapshot with the crew.”</p>
+              <p class="note">Posted by Aria · Today</p>
+            </article>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="hero-media">
+        <div class="img-card">
+          <h2>Share a Post</h2>
+          <p class="subtitle">Add a short update and optionally attach a Spotify snapshot link.</p>
+
+          <form action="/community" method="POST">
+            <label class="note" for="title">Title</label>
+            <input id="title" name="title" type="text" placeholder="My listening week" required />
+
+            <label class="note" for="body">Post</label>
+            <textarea id="body" name="body" rows="5" placeholder="What did you discover?" required></textarea>
+
+            <label class="note" for="snapshotUrl">Spotify Snapshot URL (optional)</label>
+            <input id="snapshotUrl" name="snapshotUrl" type="url" placeholder="https://open.spotify.com/..." />
+
+            <div class="cta-row">
+              <button class="btn btn-primary" type="submit">Post to Community</button>
+              <a class="btn btn-secondary" href="/auth/login">Connect Spotify</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <%- include("Partials/Footer") %>
+</body>
+</html>

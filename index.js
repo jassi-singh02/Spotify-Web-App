@@ -13,6 +13,10 @@ app.get("/", (req, res) => {
   res.render("index")
 });
 
+app.get("/community", (req, res) => {
+  res.render("community")
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
