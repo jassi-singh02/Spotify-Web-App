@@ -5,7 +5,7 @@ dotenv.config();
 
 const app = express();
 const port = 3000;
-// check in + 2
+// check in + 3
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
