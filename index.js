@@ -4,7 +4,7 @@ import session from 'express-session';
 import crypto from 'crypto';
 
 dotenv.config();
-
+// check in
 const app = express();
 const port = 3000;
 // serve static assets and parse form bodies
