@@ -4,7 +4,7 @@ import session from 'express-session';
 import crypto from 'crypto';
 
 dotenv.config();
-// check in +2
+
 const app = express();
 const port = 3000;
 // serve static assets and parse form bodies
@@ -18,7 +18,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false } // set `true` when using HTTPS in production
-}));
+})); 
 
 // In-memory storage for posts (replace with DB in production)
 const posts = [];
