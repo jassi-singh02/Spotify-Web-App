@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -103,84 +104,99 @@
     }
   </style>
 </head>
+
 <body>
   <%- include("Partials/Header") %>
 
-  <main class="container">
-    <!-- User Profile Header -->
-    <div class="dashboard-header">
-      <div class="user-info">
-        <% if (user.images && user.images.length > 0) { %>
-          <img src="<%= user.images[0].url %>" alt="<%= user.display_name %>" />
-        <% } %>
-        <div>
-          <h2><%= user.display_name %></h2>
-          <p>Followers: <%= user.followers.total %></p>
+    <main class="container">
+      <!-- User Profile Header -->
+      <div class="dashboard-header">
+        <div class="user-info">
+          <% if (user.images && user.images.length> 0) { %>
+            <img src="<%= user.images[0].url %>" alt="<%= user.display_name %>" />
+            <% } %>
+              <div>
+                <h2>
+                  <%= user.display_name %>
+                </h2>
+                <p>Followers: <%= user.followers.total %>
+                </p>
+              </div>
         </div>
       </div>
-    </div>
 
-    <!-- Recently Played Section -->
-    <section class="section">
-      <h3>Recently Played (Last 10)</h3>
-      <% if (recent.length > 0) { %>
-        <ul class="item-list">
-          <% recent.forEach((item) => { %>
-            <li>
-              <strong><%= item.track.name %></strong>
-              <div class="artist">
-                by <%= item.track.artists.map(a => a.name).join(', ') %>
-              </div>
-            </li>
-          <% }) %>
-        </ul>
-      <% } else { %>
-        <p>No recently played tracks found.</p>
-      <% } %>
-    </section>
+      <!-- Recently Played Section -->
+      <section class="section">
+        <h3>Recently Played (Last 10)</h3>
+        <% if (recent.length> 0) { %>
+          <ul class="item-list">
+            <% recent.forEach((item)=> { %>
+              <li>
+                <strong>
+                  <%= item.track.name %>
+                </strong>
+                <div class="artist">
+                  by <%= item.track.artists.map(a=> a.name).join(', ') %>
+                </div>
+              </li>
+              <% }) %>
+          </ul>
+          <% } else { %>
+            <p>No recently played tracks found.</p>
+            <% } %>
+      </section>
 
-    <!-- Top Tracks (Short-term) Section -->
-    <section class="section">
-      <h3>Top Tracks (Short-term)</h3>
-      <% if (topTracks.length > 0) { %>
-        <ul class="item-list">
-          <% topTracks.forEach((track, idx) => { %>
-            <li>
-              <strong><%= idx + 1 %>. <%= track.name %></strong>
-              <div class="artist">
-                by <%= track.artists.map(a => a.name).join(', ') %>
-              </div>
-            </li>
-          <% }) %>
-        </ul>
-      <% } else { %>
-        <p>No top tracks found.</p>
-      <% } %>
-    </section>
+      <!-- Top Tracks (Short-term) Section -->
+      <section class="section">
+        <h3>Top Tracks (Short-term)</h3>
+        <% if (topTracks.length> 0) { %>
+          <ul class="item-list">
+            <% topTracks.forEach((track, idx)=> { %>
+              <li>
+                <strong>
+                  <%= idx + 1 %>. <%= track.name %>
+                </strong>
+                <div class="artist">
+                  by <%= track.artists.map(a=> a.name).join(', ') %>
+                </div>
+              </li>
+              <% }) %>
+          </ul>
+          <% } else { %>
+            <p>No top tracks found.</p>
+            <% } %>
+      </section>
 
-    <!-- Top Artists (Long-term) Section -->
-    <section class="section">
-      <h3>Top Artists (Long-term)</h3>
-      <% if (topArtists.length > 0) { %>
-        <ul class="item-list">
-          <% topArtists.forEach((artist, idx) => { %>
-            <li>
-              <strong><%= idx + 1 %>. <%= artist.name %></strong>
-            </li>
-          <% }) %>
-        </ul>
-      <% } else { %>
-        <p>No top artists found.</p>
-      <% } %>
-    </section>
+      <!-- Top Artists (Long-term) Section -->
+      <section class="section">
+        <h3>Top Artists (Long-term)</h3>
+        <% if (topArtists.length> 0) { %>
+          <ul class="item-list">
+            <% topArtists.forEach((artist, idx)=> { %>
+              <li style="display:flex; align-items:center; gap:0.75rem;">
+                <% if (artist.images && artist.images.length> 0) { %>
+                  <img src="<%= artist.images[artist.images.length - 1].url %>" alt="<%= artist.name %>"
+                    style="width:48px; height:48px; border-radius:50%; object-fit:cover;" />
+                  <% } %>
+                    <strong>
+                      <%= idx + 1 %>. <%= artist.name %>
+                    </strong>
+              </li>
+              <% }) %>
+          </ul>
+          <% } else { %>
+            <p>No top artists found.</p>
+            <% } %>
+      </section>
 
-    <!-- Navigation -->
-    <div class="nav-links">
-      <a class="btn btn-primary" href="/community">Community Feed</a>
-      <a class="btn btn-secondary" href="/">Home</a>
-    </div>
-  </main>
+      <!-- Navigation -->
+      <div class="nav-links">
+        <a class="btn btn-primary" href="/community">Community Feed</a>
+        <a class="btn btn-secondary" href="/">Home</a>
+      </div>
+    </main>
 
-  <%- include("Partials/Footer") %>
+    <%- include("Partials/Footer") %>
 </body>
+
 </html>
