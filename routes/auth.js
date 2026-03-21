@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import crypto from 'crypto';
 import { base64url, sha256 } from '../utils/spotify.js';
+import db from '../utils/db.js';
 
 const router = Router();
 
@@ -79,6 +80,35 @@ router.get("/callback", async (req, res) => {
     req.session.access_token = tokenData.access_token;
     req.session.refresh_token = tokenData.refresh_token;
     req.session.token_expires_at = Date.now() + (tokenData.expires_in || 3600) * 1000;
+
+    // Fetch Spotify profile so we can save it to the database
+    const profileResp = await fetch('https://api.spotify.com/v1/me', {
+      headers: { Authorization: `Bearer ${tokenData.access_token}` }
+    });
+    const profile = await profileResp.json();
+
+    // Upsert: insert the user if they're new, update their name/avatar if they've logged in before.
+    // ON CONFLICT targets the unique spotify_id column.
+    const upsert = db.prepare(`
+      INSERT INTO users (spotify_id, display_name, avatar_url)
+      VALUES (@spotify_id, @display_name, @avatar_url)
+      ON CONFLICT(spotify_id) DO UPDATE SET
+        display_name = excluded.display_name,
+        avatar_url   = excluded.avatar_url
+    `);
+
+    upsert.run({
+      spotify_id:   profile.id,
+      display_name: profile.display_name || 'Unknown',
+      avatar_url:   profile.images?.[0]?.url || null
+    });
+
+    // Read back the row to get our internal DB id
+    const dbUser = db.prepare('SELECT id FROM users WHERE spotify_id = ?').get(profile.id);
+
+    // Save our DB user id and display name to session for use in other routes
+    req.session.user_id = dbUser.id;
+    req.session.display_name = profile.display_name;
 
     // Clear sensitive session values after successful use
     delete req.session.code_verifier;

@@ -1,0 +1,35 @@
+import Database from 'better-sqlite3';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// __dirname equivalent for ES modules
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Opens the database file (creates it if it doesn't exist)
+const db = new Database(path.join(__dirname, '..', 'data', 'app.db'));
+
+// Enable WAL mode: better performance for concurrent reads/writes
+db.pragma('journal_mode = WAL');
+
+// Create tables on first run — IF NOT EXISTS means this is safe to run every time
+db.exec(`
+  CREATE TABLE IF NOT EXISTS users (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    spotify_id   TEXT    UNIQUE NOT NULL,
+    display_name TEXT,
+    avatar_url   TEXT,
+    created_at   TEXT    DEFAULT (datetime('now'))
+  );
+
+  CREATE TABLE IF NOT EXISTS posts (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id       INTEGER NOT NULL REFERENCES users(id),
+    author_name   TEXT,
+    title         TEXT    NOT NULL,
+    body          TEXT    NOT NULL,
+    snapshot_json TEXT,
+    created_at    TEXT    DEFAULT (datetime('now'))
+  );
+`);
+
+export default db;

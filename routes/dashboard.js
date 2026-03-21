@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { spotifyGet } from '../utils/spotify.js';
 
 const router = Router();
-// check in 
+
 // Dashboard route: fetch user data and listening history from Spotify
 router.get("/dashboard", async (req, res) => {
   try {
