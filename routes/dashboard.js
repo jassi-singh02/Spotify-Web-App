@@ -16,12 +16,14 @@ router.get("/dashboard", async (req, res) => {
     const recentlyPlayed = await spotifyGet(req, 'https://api.spotify.com/v1/me/player/recently-played?limit=10');
     const topTracks = await spotifyGet(req, 'https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=10');
     const topArtists = await spotifyGet(req, 'https://api.spotify.com/v1/me/top/artists?time_range=long_term&limit=10');
+    const topTracksMedium = await spotifyGet(req, 'https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=10');
 
     res.render('dashboard', {
       user,
       recent: recentlyPlayed.items || [],
       topTracks: topTracks.items || [],
-      topArtists: topArtists.items || []
+      topArtists: topArtists.items || [],
+      topTracksMedium: topTracksMedium.items || []
     });
   } catch (err) {
     console.error('Dashboard error:', err);

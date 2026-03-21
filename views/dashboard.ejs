@@ -50,7 +50,7 @@
 
       <!-- Quadrant 2: Top Tracks -->
       <div class="dash-card">
-        <h3 class="dash-card-title">Top Tracks <span class="dash-badge">Short-term</span></h3>
+        <h3 class="dash-card-title">Top Tracks <span class="dash-badge">Last 4 Weeks</span></h3>
         <% if (topTracks.length > 0) { %>
           <ul class="dash-list">
             <% topTracks.forEach((track, idx) => { %>
@@ -68,7 +68,7 @@
 
       <!-- Quadrant 3: Top Artists -->
       <div class="dash-card">
-        <h3 class="dash-card-title">Top Artists <span class="dash-badge">Long-term</span></h3>
+        <h3 class="dash-card-title">Top Artists <span class="dash-badge">All Time</span></h3>
         <% if (topArtists.length > 0) { %>
           <ul class="dash-list">
             <% topArtists.forEach((artist, idx) => { %>
@@ -86,7 +86,25 @@
         <% } %>
       </div>
 
-      <!-- Quadrant 4: Share Snapshot -->
+      <!--Quadrant 4: 6 month Top Tracks -->
+      <div class="dash-card">
+        <h3 class="dash-card-title">Top Tracks <span class="dash-badge"> Last 6 Months </span></h3>
+        <% if (topTracksMedium.length > 0) { %>
+          <ul class="dash-list">
+            <% topTracksMedium.forEach((track, idx) => { %>
+              <li class="dash-list-item">
+                <span class="dash-rank"><%= idx + 1 %></span>
+                <span class="dash-item-name"><%= track.name %></span>
+                <span class="dash-item-sub"><%= track.artists.map(a => a.name).join(', ') %></span>
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <p class="dash-empty">No top tracks found.</p>
+        <% } %>
+      </div>
+
+      <!-- Quadrant 5: Share Snapshot -->
       <div class="dash-card dash-card--share">
         <h3 class="dash-card-title">Share a Snapshot</h3>
         <p class="dash-share-desc">Post your listening data to the community feed.</p>
