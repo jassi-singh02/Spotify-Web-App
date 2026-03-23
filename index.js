@@ -9,7 +9,7 @@ import dashboardRoutes from './routes/dashboard.js';
 dotenv.config();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 // check in 
 // Serve static assets and parse form bodies
 app.use(express.static("public"));
@@ -21,7 +21,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'dev_secret',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } // set `true` when using HTTPS in production
+  cookie: { secure: process.env.NODE_ENV === 'production' }
 }));
 
 // Routes
