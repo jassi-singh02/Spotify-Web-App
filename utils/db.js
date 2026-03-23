@@ -1,12 +1,17 @@
 import Database from 'better-sqlite3';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 // __dirname equivalent for ES modules
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Ensure the data directory exists (won't fail if it already does)
+const dataDir = path.join(__dirname, '..', 'data');
+fs.mkdirSync(dataDir, { recursive: true });
+
 // Opens the database file (creates it if it doesn't exist)
-const db = new Database(path.join(__dirname, '..', 'data', 'app.db'));
+const db = new Database(path.join(dataDir, 'app.db'));
 
 // Enable WAL mode: better performance for concurrent reads/writes
 db.pragma('journal_mode = WAL');
