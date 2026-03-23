@@ -10,6 +10,7 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+app.set('trust proxy', 1);
 // check in 
 // Serve static assets and parse form bodies
 app.use(express.static("public"));
