@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import session from 'express-session';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 import authRoutes from './routes/auth.js';
 import communityRoutes from './routes/community.js';
@@ -8,12 +10,14 @@ import dashboardRoutes from './routes/dashboard.js';
 
 dotenv.config();
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 const app = express();
 const port = process.env.PORT || 3000;
 app.set('trust proxy', 1);
 // check in 
 // Serve static assets and parse form bodies
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
