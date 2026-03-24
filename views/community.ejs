@@ -40,6 +40,11 @@
           <p class="subtitle">Add a short update and optionally attach a Spotify snapshot link.</p>
 
           <form action="/community" method="POST">
+            <% if (!user) { %>
+              <label class="note" for="guest_name">Your Name</label>
+              <input id="guest_name" name="guest_name" type="text" placeholder="Enter your name" />
+            <% } %>
+
             <label class="note" for="title">Title</label>
             <input id="title" name="title" type="text" placeholder="My listening week" required />
 

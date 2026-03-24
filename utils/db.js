@@ -28,13 +28,23 @@ db.exec(`
 
   CREATE TABLE IF NOT EXISTS posts (
     id            INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id       INTEGER NOT NULL REFERENCES users(id),
-    author_name   TEXT,
+    user_id       INTEGER REFERENCES users(id),
+    guest_name    TEXT,
     title         TEXT    NOT NULL,
     body          TEXT    NOT NULL,
     snapshot_json TEXT,
     created_at    TEXT    DEFAULT (datetime('now'))
   );
+
+  -- Add guest_name column if upgrading from old schema
+  CREATE TABLE IF NOT EXISTS _migrations (id INTEGER PRIMARY KEY);
+
 `);
+
+// Migrate: add guest_name column if it doesn't exist yet
+const columns = db.pragma('table_info(posts)').map(c => c.name);
+if (!columns.includes('guest_name')) {
+  db.exec(`ALTER TABLE posts ADD COLUMN guest_name TEXT;`);
+}
 
 export default db;
