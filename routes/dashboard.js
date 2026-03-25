@@ -11,6 +11,7 @@ router.get("/dashboard", async (req, res) => {
       return res.redirect('/auth/login');
     }
 
+    // check in
     // Fetch user profile and listening data from Spotify
     const user = await spotifyGet(req, 'https://api.spotify.com/v1/me');
     const recentlyPlayed = await spotifyGet(req, 'https://api.spotify.com/v1/me/player/recently-played?limit=10');
