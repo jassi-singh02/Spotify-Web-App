@@ -1,50 +1,35 @@
-import Database from 'better-sqlite3';
-import path from 'path';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
+import 'dotenv/config';
+import pg from 'pg';
+const { Pool } = pg;
 
-// __dirname equivalent for ES modules
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Pool manages multiple connections automatically.
+// DATABASE_URL is set by Railway in production, and in your .env locally.
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
+});
 
-// Ensure the data directory exists (won't fail if it already does)
-const dataDir = path.join(__dirname, '..', 'data');
-fs.mkdirSync(dataDir, { recursive: true });
-
-// Opens the database file (creates it if it doesn't exist)
-const db = new Database(path.join(dataDir, 'app.db'));
-
-// Enable WAL mode: better performance for concurrent reads/writes
-db.pragma('journal_mode = WAL');
-
-// Create tables on first run — IF NOT EXISTS means this is safe to run every time
-db.exec(`
+// Create tables on first run — safe to run every time due to IF NOT EXISTS
+await pool.query(`
   CREATE TABLE IF NOT EXISTS users (
-    id           INTEGER PRIMARY KEY AUTOINCREMENT,
-    spotify_id   TEXT    UNIQUE NOT NULL,
+    id           SERIAL PRIMARY KEY,
+    spotify_id   TEXT UNIQUE NOT NULL,
     display_name TEXT,
     avatar_url   TEXT,
-    created_at   TEXT    DEFAULT (datetime('now'))
-  );
-
-  CREATE TABLE IF NOT EXISTS posts (
-    id            INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id       INTEGER REFERENCES users(id),
-    guest_name    TEXT,
-    title         TEXT    NOT NULL,
-    body          TEXT    NOT NULL,
-    snapshot_json TEXT,
-    created_at    TEXT    DEFAULT (datetime('now'))
-  );
-
-  -- Add guest_name column if upgrading from old schema
-  CREATE TABLE IF NOT EXISTS _migrations (id INTEGER PRIMARY KEY);
-
+    created_at   TIMESTAMPTZ DEFAULT NOW()
+  )
 `);
 
-// Migrate: add guest_name column if it doesn't exist yet
-const columns = db.pragma('table_info(posts)').map(c => c.name);
-if (!columns.includes('guest_name')) {
-  db.exec(`ALTER TABLE posts ADD COLUMN guest_name TEXT;`);
-}
+await pool.query(`
+  CREATE TABLE IF NOT EXISTS posts (
+    id            SERIAL PRIMARY KEY,
+    user_id       INTEGER REFERENCES users(id),
+    guest_name    TEXT,
+    title         TEXT NOT NULL,
+    body          TEXT NOT NULL,
+    snapshot_json TEXT,
+    created_at    TIMESTAMPTZ DEFAULT NOW()
+  )
+`);
 
-export default db;
+export default pool;
